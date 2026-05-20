@@ -25,12 +25,9 @@ RUN mkdir -p /mnt/extra-addons \
     && rm -f /tmp/addon-rev.json \
     && chown -R odoo:odoo /mnt/extra-addons
 
+COPY entrypoint.sh /usr/local/bin/odoo-entrypoint.sh
+RUN chmod +x /usr/local/bin/odoo-entrypoint.sh
+
 EXPOSE 8069 8072
 
-CMD ["odoo", \
-     "--db_host=db", \
-     "--db_port=5432", \
-     "--db_user=odoo", \
-     "--db_password=StrongPass2024!", \
-     "--data-dir=/var/lib/odoo", \
-     "--addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons"]
+CMD ["/usr/local/bin/odoo-entrypoint.sh"]
