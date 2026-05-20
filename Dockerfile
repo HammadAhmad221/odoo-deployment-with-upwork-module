@@ -16,10 +16,13 @@ RUN pip3 install --break-system-packages gdown \
     && pip3 uninstall --break-system-packages -y gdown
 
 # Install custom addon: Upwork Bid Tracker
+# ADD on the commits API changes whenever main advances, busting the layer cache below.
+ADD https://api.github.com/repos/HammadAhmad221/odoo-upwork-module/commits/main /tmp/addon-rev.json
 RUN mkdir -p /mnt/extra-addons \
     && git clone --depth 1 https://github.com/HammadAhmad221/odoo-upwork-module.git /mnt/extra-addons/upwork_bid_tracker \
     && rm -rf /mnt/extra-addons/upwork_bid_tracker/.git \
     && rm -rf /mnt/extra-addons/upwork_bid_tracker/__pycache__ \
+    && rm -f /tmp/addon-rev.json \
     && chown -R odoo:odoo /mnt/extra-addons
 
 EXPOSE 8069 8072
